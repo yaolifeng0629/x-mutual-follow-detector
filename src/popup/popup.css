@@ -12,7 +12,7 @@ body {
 }
 
 .popup-container {
-  width: 400px;
+  width: 480px;
   min-height: 500px;
   background: #ffffff;
   color: #0f172a;
@@ -427,7 +427,7 @@ body {
 }
 
 /* Responsive adjustments */
-@media (max-width: 400px) {
+@media (max-width: 480px) {
   .popup-container {
     width: 100%;
   }
