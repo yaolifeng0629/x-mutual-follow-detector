@@ -326,3 +326,52 @@ body {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+/* Developer Info Footer */
+.dev-footer {
+  padding: 8px 16px;
+  background: linear-gradient(to right, rgba(239, 246, 255, 0.3), rgba(239, 246, 255, 0.5), rgba(239, 246, 255, 0.3));
+  border-top: 1px solid #dbeafe;
+}
+
+.dev-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.dev-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #2563eb; /* text-blue-600 */
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 12px;
+  cursor: pointer;
+  transition: color 0.2s;
+  font-family: inherit;
+}
+
+.dev-btn:hover {
+  color: #1d4ed8; /* text-blue-700 */
+  text-decoration: underline;
+}
+
+.dev-btn svg {
+  width: 12px;
+  height: 12px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.dev-btn:hover svg {
+  opacity: 1;
+}
+
+.separator {
+  color: #d1d5db; /* text-gray-300 */
+}
