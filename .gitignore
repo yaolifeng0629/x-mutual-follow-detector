@@ -35,6 +35,11 @@ pnpm-debug.log*
 *.crx
 *.pem
 
+# Lock files (use bun.lockb instead)
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
 # Temp files
 *.tmp
 .cache/
