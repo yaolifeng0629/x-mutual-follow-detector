@@ -39,3 +39,7 @@ pnpm-debug.log*
 *.tmp
 .cache/
 .claude/
+
+# Build artifacts
+build/
+.plasmo/
