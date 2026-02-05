@@ -68,7 +68,7 @@ function cleanup() {
 
 function createStatsBar() {
   if (statsBar) {
-    statsBar.style.display = "block"
+    statsBar.style.display = "flex"
     return
   }
 
@@ -80,42 +80,99 @@ function createStatsBar() {
     left: 0;
     right: 0;
     z-index: 9999;
-    background: linear-gradient(135deg, #1DA1F2 0%, #0D8BD9 100%);
+    background: linear-gradient(135deg, #1d9bf0 0%, #1a8cd8 100%);
     color: white;
-    padding: 12px 20px;
-    text-align: center;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     font-size: 14px;
-    font-weight: 600;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    font-weight: 500;
+    box-shadow: 0 2px 12px rgba(29, 155, 240, 0.15);
     backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   `
 
-  // 创建统计文字
+  // 创建统计文字容器
   const statsText = document.createElement("span")
   statsText.className = "stats-text"
   statsText.textContent = "总关注：0 | 未互关：0"
+  statsText.style.cssText = `
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  `
 
-  // 创建提示文字
-  const hintText = document.createElement("span")
-  hintText.className = "stats-hint"
-  hintText.textContent = " 👇 向下滚动查看更多用户"
-  hintText.style.cssText = `
-    margin-left: 16px;
-    font-size: 12px;
-    opacity: 0.9;
+  // 创建分隔符
+  const separator = document.createElement("span")
+  separator.style.cssText = `
+    width: 1px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.3);
+    display: inline-block;
+  `
+
+  // 创建提示文字容器
+  const hintContainer = document.createElement("span")
+  hintContainer.className = "stats-hint"
+  hintContainer.style.cssText = `
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    opacity: 0.95;
     font-weight: 400;
   `
 
+  // 创建向下箭头 SVG 图标
+  const arrowIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+  arrowIcon.setAttribute("fill", "none")
+  arrowIcon.setAttribute("stroke", "currentColor")
+  arrowIcon.setAttribute("viewBox", "0 0 24 24")
+  arrowIcon.style.cssText = `
+    width: 16px;
+    height: 16px;
+    animation: bounce 2s ease-in-out infinite;
+  `
+
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path")
+  path.setAttribute("stroke-linecap", "round")
+  path.setAttribute("stroke-linejoin", "round")
+  path.setAttribute("stroke-width", "2")
+  path.setAttribute("d", "M19 14l-7 7m0 0l-7-7m7 7V3")
+  arrowIcon.appendChild(path)
+
+  const hintText = document.createElement("span")
+  hintText.textContent = "向下滚动查看更多用户"
+
+  hintContainer.appendChild(arrowIcon)
+  hintContainer.appendChild(hintText)
+
   statsBar.appendChild(statsText)
-  statsBar.appendChild(hintText)
+  statsBar.appendChild(separator)
+  statsBar.appendChild(hintContainer)
   document.body.appendChild(statsBar)
+
+  // 添加动画样式
+  const style = document.createElement("style")
+  style.textContent = `
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(4px);
+      }
+    }
+  `
+  document.head.appendChild(style)
 
   // 为页面内容添加顶部间距，避免被遮挡
   const main = document.querySelector('main')
   if (main) {
     const existingPadding = parseInt(window.getComputedStyle(main).paddingTop) || 0
-    main.style.paddingTop = `${existingPadding + 48}px`
+    main.style.paddingTop = `${existingPadding + 54}px`
   }
 }
 
@@ -213,44 +270,91 @@ function createExportButton() {
   container.id = "x-mutual-export-container"
   container.style.cssText = `
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 24px;
+    right: 24px;
     z-index: 9998;
-    background: #000;
-    border-radius: 12px;
-    padding: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   `
+
+  // 添加悬停效果
+  container.onmouseover = () => {
+    container.style.boxShadow = "0 12px 32px rgba(0, 0, 0, 0.16), 0 4px 12px rgba(0, 0, 0, 0.12)"
+    container.style.transform = "translateY(-2px)"
+  }
+  container.onmouseout = () => {
+    container.style.boxShadow = "0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08)"
+    container.style.transform = "translateY(0)"
+  }
 
   const button = document.createElement("button")
   button.id = "x-mutual-export-btn"
-  button.textContent = "导出关注列表为 CSV"
   button.style.cssText = `
-    padding: 10px 16px;
-    background: #1DA1F2;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #1d9bf0 0%, #1a8cd8 100%);
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     font-weight: 600;
     font-size: 14px;
-    transition: background 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(29, 155, 240, 0.3);
+    letter-spacing: 0.3px;
   `
+
+  // 创建下载图标 SVG
+  const downloadIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+  downloadIcon.setAttribute("fill", "none")
+  downloadIcon.setAttribute("stroke", "currentColor")
+  downloadIcon.setAttribute("viewBox", "0 0 24 24")
+  downloadIcon.style.cssText = `
+    width: 18px;
+    height: 18px;
+  `
+
+  const downloadPath = document.createElementNS("http://www.w3.org/2000/svg", "path")
+  downloadPath.setAttribute("stroke-linecap", "round")
+  downloadPath.setAttribute("stroke-linejoin", "round")
+  downloadPath.setAttribute("stroke-width", "2")
+  downloadPath.setAttribute("d", "M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z")
+  downloadIcon.appendChild(downloadPath)
+
+  const buttonText = document.createElement("span")
+  buttonText.textContent = "导出关注列表为 CSV"
+
+  button.appendChild(downloadIcon)
+  button.appendChild(buttonText)
+
   button.onmouseover = () => {
-    button.style.background = "#0D8BD9"
+    button.style.background = "linear-gradient(135deg, #1a8cd8 0%, #0d7ec4 100%)"
+    button.style.transform = "scale(1.02)"
+    button.style.boxShadow = "0 4px 12px rgba(29, 155, 240, 0.4)"
   }
   button.onmouseout = () => {
-    button.style.background = "#1DA1F2"
+    button.style.background = "linear-gradient(135deg, #1d9bf0 0%, #1a8cd8 100%)"
+    button.style.transform = "scale(1)"
+    button.style.boxShadow = "0 2px 8px rgba(29, 155, 240, 0.3)"
   }
 
   const progress = document.createElement("div")
   progress.id = "x-mutual-export-progress"
   progress.textContent = "就绪"
   progress.style.cssText = `
-    margin-top: 8px;
+    margin-top: 10px;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.8);
+    color: #64748b;
+    text-align: center;
+    font-weight: 500;
+    letter-spacing: 0.2px;
   `
 
   container.appendChild(button)
@@ -314,17 +418,25 @@ function createExportButton() {
     scrolling = false
     clearInterval(scrollTimer)
     clearTimeout(noNewTimer)
-    button.textContent = "导出完成！"
+
+    // 更新按钮状态为成功
+    buttonText.textContent = "导出完成！"
     button.disabled = true
-    button.style.background = "#10B981"
+    button.style.background = "linear-gradient(135deg, #10b981 0%, #059669 100%)"
+    button.style.cursor = "not-allowed"
+    button.style.boxShadow = "0 2px 8px rgba(16, 185, 129, 0.3)"
+
     exportCSV()
 
     // 3秒后恢复按钮
     setTimeout(() => {
       button.disabled = false
-      button.textContent = "导出关注列表为 CSV"
-      button.style.background = "#1DA1F2"
+      button.style.cursor = "pointer"
+      buttonText.textContent = "导出关注列表为 CSV"
+      button.style.background = "linear-gradient(135deg, #1d9bf0 0%, #1a8cd8 100%)"
+      button.style.boxShadow = "0 2px 8px rgba(29, 155, 240, 0.3)"
       progress.textContent = "就绪"
+      progress.style.color = "#64748b"
     }, 3000)
   }
 
@@ -361,8 +473,11 @@ function createExportButton() {
     }
 
     scrolling = true
-    button.textContent = "滚动中...点击停止"
+    buttonText.textContent = "滚动中...点击停止"
+    button.style.background = "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)"
+    button.style.boxShadow = "0 2px 8px rgba(245, 158, 11, 0.3)"
     progress.textContent = "开始加载..."
+    progress.style.color = "#f59e0b"
     collectedUsers.clear()
     collectUsers()
 
