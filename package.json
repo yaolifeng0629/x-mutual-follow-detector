@@ -1,0 +1,32 @@
+{
+  "name": "x-mutual-follow-detector",
+  "displayName": "X(Twitter) 互关检测助手",
+  "version": "1.0.0",
+  "description": "帮助你在 X(Twitter) 快速识别互关状态，支持导出关注数据到 CSV",
+  "author": "yaolifeng0629",
+  "scripts": {
+    "dev": "plasmo dev",
+    "build": "plasmo build",
+    "package": "plasmo package"
+  },
+  "dependencies": {
+    "plasmo": "^0.88.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.268",
+    "@types/node": "^20.14.9",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.5.2"
+  },
+  "manifest": {
+    "host_permissions": [
+      "https://x.com/*"
+    ],
+    "permissions": [
+      "storage"
+    ]
+  }
+}
