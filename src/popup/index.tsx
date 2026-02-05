@@ -76,7 +76,7 @@ function IndexPopup() {
         </div>
         <div className="header-text">
           <h1 className="title">X 互关检测助手</h1>
-          <p className="version">v1.1.0</p>
+          <p className="version">v1.1.1</p>
         </div>
         <p className="description">
           在 X(Twitter) 关注列表页面快速识别互关状态，支持导出数据到 CSV 文件
