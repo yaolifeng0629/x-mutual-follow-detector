@@ -13,8 +13,6 @@ let totalUsers = 0
 let nonMutualUsers = 0
 let statsBar: HTMLElement | null = null
 let mutationObserver: MutationObserver | null = null
-let autoLoadTimer: any = null
-let autoLoadInProgress = false
 
 // 从存储中读取启用状态
 chrome.storage.local.get(["enabled"], (result) => {
@@ -41,9 +39,6 @@ function initPlugin() {
   createExportButton()
   startObserving()
   processExistingUsers()
-
-  // 启动自动加载完整列表
-  startAutoLoad()
 }
 
 function cleanup() {
@@ -64,9 +59,6 @@ function cleanup() {
   if (exportContainer) {
     exportContainer.remove()
   }
-
-  // 停止自动加载
-  stopAutoLoad()
 
   // 停止观察
   if (mutationObserver) {
@@ -98,7 +90,25 @@ function createStatsBar() {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     backdrop-filter: blur(10px);
   `
-  statsBar.textContent = "总关注：0 | 未互关：0"
+
+  // 创建统计文字
+  const statsText = document.createElement("span")
+  statsText.className = "stats-text"
+  statsText.textContent = "总关注：0 | 未互关：0"
+
+  // 创建提示文字
+  const hintText = document.createElement("span")
+  hintText.className = "stats-hint"
+  hintText.textContent = " 👇 向下滚动查看更多用户"
+  hintText.style.cssText = `
+    margin-left: 16px;
+    font-size: 12px;
+    opacity: 0.9;
+    font-weight: 400;
+  `
+
+  statsBar.appendChild(statsText)
+  statsBar.appendChild(hintText)
   document.body.appendChild(statsBar)
 
   // 为页面内容添加顶部间距，避免被遮挡
@@ -111,7 +121,10 @@ function createStatsBar() {
 
 function updateStats() {
   if (statsBar) {
-    statsBar.textContent = `总关注：${totalUsers} | 未互关：${nonMutualUsers}`
+    const statsText = statsBar.querySelector('.stats-text')
+    if (statsText) {
+      statsText.textContent = `总关注：${totalUsers} | 未互关：${nonMutualUsers}`
+    }
   }
 }
 
@@ -356,88 +369,6 @@ function createExportButton() {
     const randomDelay = () => 3000 + Math.random() * 3000
     scrollTimer = setInterval(scrollAndCollect, randomDelay())
     noNewTimer = setTimeout(stopAndExport, 15000)
-  }
-}
-
-// 自动加载完整列表功能
-function startAutoLoad() {
-  if (autoLoadInProgress) return
-
-  autoLoadInProgress = true
-  let previousUserCount = 0
-  let noNewCount = 0
-  const maxNoNewAttempts = 3 // 连续3次没有新用户则停止
-
-  console.log("[X互关检测] 开始自动加载完整关注列表...")
-
-  const checkAndScroll = () => {
-    const currentUserCount = document.querySelectorAll('[data-testid="UserCell"]').length
-
-    if (currentUserCount > previousUserCount) {
-      // 有新用户加载
-      noNewCount = 0
-      previousUserCount = currentUserCount
-
-      if (statsBar) {
-        const loadingIndicator = statsBar.querySelector('.loading-indicator')
-        if (!loadingIndicator) {
-          const indicator = document.createElement('span')
-          indicator.className = 'loading-indicator'
-          indicator.textContent = ' (自动加载中...)'
-          indicator.style.cssText = 'font-size: 12px; margin-left: 8px; opacity: 0.8;'
-          statsBar.appendChild(indicator)
-        }
-      }
-
-      // 滚动到底部
-      window.scrollTo(0, document.body.scrollHeight)
-
-      // 继续检查
-      autoLoadTimer = setTimeout(checkAndScroll, 2000 + Math.random() * 1000)
-    } else {
-      // 没有新用户
-      noNewCount++
-
-      if (noNewCount >= maxNoNewAttempts) {
-        // 连续多次没有新用户,认为已加载完成
-        console.log(`[X互关检测] 自动加载完成! 共加载 ${currentUserCount} 个用户`)
-        stopAutoLoad()
-
-        if (statsBar) {
-          const loadingIndicator = statsBar.querySelector('.loading-indicator')
-          if (loadingIndicator) {
-            loadingIndicator.textContent = ' ✓'
-            setTimeout(() => loadingIndicator.remove(), 3000)
-          }
-        }
-      } else {
-        // 继续尝试
-        window.scrollTo(0, document.body.scrollHeight)
-        autoLoadTimer = setTimeout(checkAndScroll, 2000 + Math.random() * 1000)
-      }
-    }
-  }
-
-  // 延迟启动,等待页面初始化
-  setTimeout(() => {
-    previousUserCount = document.querySelectorAll('[data-testid="UserCell"]').length
-    checkAndScroll()
-  }, 2000)
-}
-
-function stopAutoLoad() {
-  if (autoLoadTimer) {
-    clearTimeout(autoLoadTimer)
-    autoLoadTimer = null
-  }
-  autoLoadInProgress = false
-
-  // 移除加载提示
-  if (statsBar) {
-    const loadingIndicator = statsBar.querySelector('.loading-indicator')
-    if (loadingIndicator) {
-      loadingIndicator.remove()
-    }
   }
 }
 
