@@ -1,7 +1,7 @@
 {
   "name": "x-mutual-follow-detector",
   "displayName": "X(Twitter) 互关检测助手",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "帮助你在 X(Twitter) 快速识别互关状态，支持导出关注数据到 CSV",
   "author": "yaolifeng0629",
   "scripts": {
@@ -26,7 +26,8 @@
       "https://x.com/*"
     ],
     "permissions": [
-      "storage"
+      "storage",
+      "tabs"
     ]
   }
 }
