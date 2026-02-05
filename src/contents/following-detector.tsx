@@ -36,6 +36,7 @@ chrome.storage.onChanged.addListener((changes) => {
 
 function initPlugin() {
   createStatsBar()
+  createExportButton()
   startObserving()
   processExistingUsers()
 }
@@ -51,6 +52,12 @@ function cleanup() {
   // 隐藏统计栏
   if (statsBar) {
     statsBar.style.display = "none"
+  }
+
+  // 移除导出按钮
+  const exportContainer = document.getElementById("x-mutual-export-container")
+  if (exportContainer) {
+    exportContainer.remove()
   }
 
   // 停止观察
@@ -176,6 +183,11 @@ function startObserving() {
 
 // 导出功能
 function createExportButton() {
+  // 防止重复创建
+  if (document.getElementById("x-mutual-export-container")) {
+    return
+  }
+
   const container = document.createElement("div")
   container.id = "x-mutual-export-container"
   container.style.cssText = `
