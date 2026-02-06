@@ -150,114 +150,6 @@
 
 **不存储任何用户数据或关注列表信息。**
 
-## 🛠️ 技术架构
-
-### 技术栈
-
-- **框架**: [Plasmo](https://www.plasmo.com/) - 现代化的浏览器扩展开发框架
-- **语言**: TypeScript + React
-- **样式**: CSS Modules
-- **构建**: Parcel (Plasmo 内置)
-
-### 项目结构
-
-```
-x-mutual-follow-detector/
-├── src/
-│   ├── contents/
-│   │   └── following-detector.tsx    # 内容脚本（核心功能）
-│   ├── popup/
-│   │   ├── index.tsx                 # Popup 主组件
-│   │   └── popup.css                 # Popup 样式
-├── assets/
-│   └── icon.svg                      # 插件图标
-├── .monkeycode/
-│   └── specs/
-│       └── x-twitter-mutual-follow-detector/
-│           └── requirements.md       # 需求文档
-├── package.json
-├── tsconfig.json
-└── README.md
-```
-
-### 核心实现
-
-#### 1. 互关检测
-
-使用 `MutationObserver` 监听 DOM 变化：
-
-```typescript
-const followsYouIndicator = cell.querySelector('[data-testid="userFollowIndicator"]');
-const isMutual = !!followsYouIndicator;
-```
-
-#### 2. 数据收集
-
-基于稳定的 `data-testid` 选择器：
-
-```typescript
-document.querySelectorAll('[data-testid="UserCell"]');
-```
-
-#### 3. 导出机制
-
-使用 Blob API 生成 CSV 文件：
-
-```typescript
-const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' });
-const url = URL.createObjectURL(blob);
-```
-
-## 🔧 开发指南
-
-### 环境要求
-
-- Node.js >= 16
-- npm >= 8 或 pnpm >= 8
-
-### 开发模式
-
-```bash
-npm run dev
-```
-
-Plasmo 会自动启动开发服务器，支持热重载。
-
-### 生产构建
-
-```bash
-npm run build
-```
-
-构建产物在 `build/chrome-mv3-prod/` 目录。
-
-### 打包发布
-
-```bash
-npm run package
-```
-
-生成 `.zip` 文件，可直接上传到 Chrome Web Store。
-
-## 📋 需求文档
-
-完整的需求规格说明书（基于 EARS 模式和 INCOSE 质量规则）：
-
-[查看需求文档](.monkeycode/specs/x-twitter-mutual-follow-detector/requirements.md)
-
-包含 10 个核心功能模块：
-
-1. 非互关用户视觉标记
-2. 互关统计信息展示
-3. 关注数据导出功能
-4. 数据收集与解析
-5. 用户交互控制
-6. 性能与资源管理
-7. 安全与隐私保护
-8. CSV 文件格式规范
-9. 插件功能控制（Popup 面板）
-10. 错误处理与容错
-
 ## 🤝 贡献指南
 
 欢迎贡献代码、报告问题或提出建议！
@@ -292,7 +184,7 @@ npm run package
 
 ## 📞 联系方式
 
-- **作者**: yaolifeng0629
+- **作者**: [Immerse](https://yaolifeng.com)
 - **GitHub**: [@yaolifeng0629](https://github.com/yaolifeng0629)
 - **项目主页**: [x-mutual-follow-detector](https://github.com/yaolifeng0629/x-mutual-follow-detector)
 
