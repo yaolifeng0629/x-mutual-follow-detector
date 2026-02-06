@@ -1,24 +1,29 @@
+<div align="center">
+
 # X(Twitter) 互关检测助手
 
 一个简洁实用的浏览器扩展，帮助你在 X(Twitter) 平台快速识别互关状态，并支持导出关注数据。
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
-![Plasmo](https://img.shields.io/badge/built%20with-Plasmo-blueviolet)
+<img src="/assets/index.png" width="70%"/>
+
+</div>
 
 ## ✨ 核心功能
 
 ### 1. 互关状态可视化
+
 - 🔴 **自动标记未互关用户** - 使用浅红色背景高亮显示
 - 📝 **添加文字提示** - 在用户名后方显示 "（未关注你）"
 - 📊 **实时统计信息** - 页面顶部显示总关注数和未互关人数
 
 ### 2. 数据导出
+
 - 📥 **一键导出 CSV** - 点击浮动按钮即可导出完整关注列表
 - 🤖 **智能滚动加载** - 自动模拟真人滚动，避免触发风控
 - 📋 **完整数据记录** - 包含显示名称、用户名、互关状态、蓝V标识、主页链接
 
 ### 3. 隐私与安全
+
 - 🔒 **完全本地运行** - 不发送任何网络请求
 - 🚫 **不收集数据** - 仅存储插件配置信息
 - ✅ **开源透明** - 代码完全公开，欢迎审查
@@ -26,6 +31,7 @@
 ## 📸 功能演示
 
 ### 视觉标记
+
 在关注列表页面，未互关的用户会自动显示红色背景和提示文字：
 
 ```
@@ -34,6 +40,7 @@
 ```
 
 ### 统计信息栏
+
 页面顶部固定显示：
 
 ```
@@ -41,6 +48,7 @@
 ```
 
 ### 导出功能
+
 右下角浮动按钮，点击后自动滚动并导出 CSV 文件：
 
 ```
@@ -54,31 +62,34 @@
 #### 方法 1：从源码构建（推荐）
 
 1. **克隆仓库**
-   ```bash
-   git clone https://github.com/yaolifeng0629/x-mutual-follow-detector.git
-   cd x-mutual-follow-detector
-   ```
+
+    ```bash
+    git clone https://github.com/yaolifeng0629/x-mutual-follow-detector.git
+    cd x-mutual-follow-detector
+    ```
 
 2. **安装依赖**
-   ```bash
-   npm install
-   # 或者使用 pnpm
-   pnpm install
-   ```
+
+    ```bash
+    npm install
+    # 或者使用 pnpm
+    pnpm install
+    ```
 
 3. **构建插件**
-   ```bash
-   npm run build
-   # 或开发模式
-   npm run dev
-   ```
+
+    ```bash
+    npm run build
+    # 或开发模式
+    npm run dev
+    ```
 
 4. **加载到浏览器**
-   - 打开 Chrome/Edge 浏览器
-   - 访问 `chrome://extensions/`
-   - 开启「开发者模式」
-   - 点击「加载已解压的扩展程序」
-   - 选择 `build/chrome-mv3-prod` 目录（生产构建）或 `build/chrome-mv3-dev` 目录（开发模式）
+    - 打开 Chrome/Edge 浏览器
+    - 访问 `chrome://extensions/`
+    - 开启「开发者模式」
+    - 点击「加载已解压的扩展程序」
+    - 选择 `build/chrome-mv3-prod` 目录（生产构建）或 `build/chrome-mv3-dev` 目录（开发模式）
 
 #### 方法 2：直接下载（即将支持）
 
@@ -94,9 +105,10 @@
 ### 2. 查看互关状态
 
 1. 访问你的 X(Twitter) 关注列表页面：
-   ```
-   https://x.com/{你的用户名}/following
-   ```
+
+    ```
+    https://x.com/{你的用户名}/following
+    ```
 
 2. 插件会自动标记未互关的用户
 3. 页面顶部显示统计信息
@@ -110,10 +122,10 @@
 
 ### CSV 文件格式
 
-| 显示名称 | 用户名 | 是否互关 | 是否蓝V | 主页链接 |
-|---------|--------|---------|--------|---------|
-| 张三 | @zhangsan | 是 | 否 | https://x.com/zhangsan |
-| 李四 | @lisi | 否 | 是 | https://x.com/lisi |
+| 显示名称 | 用户名    | 是否互关 | 是否蓝V | 主页链接               |
+| -------- | --------- | -------- | ------- | ---------------------- |
+| 张三     | @zhangsan | 是       | 否      | https://x.com/zhangsan |
+| 李四     | @lisi     | 否       | 是      | https://x.com/lisi     |
 
 ## ⚙️ 配置选项
 
@@ -132,7 +144,7 @@
 
 ```javascript
 {
-  enabled: true  // 插件启用状态
+    enabled: true; // 插件启用状态
 }
 ```
 
@@ -175,8 +187,8 @@ x-mutual-follow-detector/
 使用 `MutationObserver` 监听 DOM 变化：
 
 ```typescript
-const followsYouIndicator = cell.querySelector('[data-testid="userFollowIndicator"]')
-const isMutual = !!followsYouIndicator
+const followsYouIndicator = cell.querySelector('[data-testid="userFollowIndicator"]');
+const isMutual = !!followsYouIndicator;
 ```
 
 #### 2. 数据收集
@@ -184,7 +196,7 @@ const isMutual = !!followsYouIndicator
 基于稳定的 `data-testid` 选择器：
 
 ```typescript
-document.querySelectorAll('[data-testid="UserCell"]')
+document.querySelectorAll('[data-testid="UserCell"]');
 ```
 
 #### 3. 导出机制
@@ -192,8 +204,8 @@ document.querySelectorAll('[data-testid="UserCell"]')
 使用 Blob API 生成 CSV 文件：
 
 ```typescript
-const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" })
-const url = URL.createObjectURL(blob)
+const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' });
+const url = URL.createObjectURL(blob);
 ```
 
 ## 🔧 开发指南
@@ -234,6 +246,7 @@ npm run package
 [查看需求文档](.monkeycode/specs/x-twitter-mutual-follow-detector/requirements.md)
 
 包含 10 个核心功能模块：
+
 1. 非互关用户视觉标记
 2. 互关统计信息展示
 3. 关注数据导出功能
