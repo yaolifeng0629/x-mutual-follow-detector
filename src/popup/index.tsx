@@ -30,6 +30,13 @@ function IndexPopup() {
 
         // 保存到存储
         await chrome.storage.local.set({ enabled: newState });
+
+        // 刷新当前页面
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+            if (tabs[0]?.id) {
+                chrome.tabs.reload(tabs[0].id);
+            }
+        });
     };
 
     const handleOpenFollowingPage = () => {
